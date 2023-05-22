@@ -1,33 +1,47 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
 import {
   OUTPUT_DIR,
-  PROGRAMMING_LANGUAGES,
   VSCODETHEMES_URL,
+  PROGRAMMING_LANGUAGES,
+  PAGES_LIMIT,
 } from '../config/constants';
 import * as fs from 'fs';
+import * as url from 'url';
 import * as path from 'path';
-import { getThemeNameFromURL } from '../util/getThemeNameFromURL';
-import { replaceLanguageInURL } from '../util/replaceLanguageInURL';
+import puppeteer, { Browser, Page } from 'puppeteer';
+import { GeneratePageImageURL } from '../types/GeneratePageImageURL';
+import { getThemeNameFromURL } from '../util/urlOperations/getThemeNameFromURL';
+import { replaceLanguageInURL } from '../util/urlOperations/replaceLanguageInURL';
 
 export class VscodeThemesCrawler {
   browser: Browser;
   page: Page;
 
   constructor() {
-    this.browser = new Browser();
-    this.page = new Page();
+    this.browser = {} as Browser;
+    this.page = {} as Page;
+  }
+
+  async initializeBrowser() {
+    this.browser = await puppeteer.launch({ headless: 'new' });
+    this.page = await this.browser.newPage();
   }
 
   async execute() {
-    this.browser = await puppeteer.launch({ headless: false });
-    this.page = await this.browser.newPage();
+    await this.initializeBrowser();
 
-    await this.page.goto(VSCODETHEMES_URL);
+    for (let page = 1; page <= PAGES_LIMIT; page++)
+      await this.processPage(page);
+
+    await this.closeBrowser();
+  }
+
+  async processPage(page: number) {
+    const newPageURL = url.resolve(VSCODETHEMES_URL, `?page=${page}`);
+    await this.page.goto(newPageURL);
 
     const pageThemesImageURLs = await this.fetchPageImages();
-    await this.savePageImages(pageThemesImageURLs);
 
-    await this.browser.close();
+    await this.savePageImages(pageThemesImageURLs);
   }
 
   async fetchPageImages() {
@@ -58,21 +72,22 @@ export class VscodeThemesCrawler {
         await this.page.waitForSelector('svg > rect:nth-child(1)');
         const themeImage = await this.page.$('svg > rect:nth-child(1)');
 
-        const outputPath = this.generatePageImageURL(
+        const outputPath = this.generatePageImageURL({
           themeOfficialName,
           themeURLName,
           language,
-        );
+        });
+
         await themeImage?.screenshot({ path: outputPath });
       }
     }
   }
 
-  generatePageImageURL(
-    themeOfficialName: string,
-    themeURLName: string,
-    language: string,
-  ) {
+  generatePageImageURL({
+    language,
+    themeOfficialName,
+    themeURLName,
+  }: GeneratePageImageURL) {
     return path.join(
       OUTPUT_DIR,
       themeOfficialName,
@@ -90,7 +105,7 @@ export class VscodeThemesCrawler {
     return themeOfficialName?.replace('/', '|');
   }
 
-  async close() {
+  async closeBrowser() {
     this.browser.close();
   }
 }

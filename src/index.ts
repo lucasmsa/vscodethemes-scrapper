@@ -1,4 +1,4 @@
-import { VscodeThemesCrawler } from './services/vscodethemes-crawler';
+import { VscodeThemesCrawler } from './services/vscodethemesCrawler';
 
 const vscodeThemesCrawler = new VscodeThemesCrawler();
 
