@@ -1,23 +1,30 @@
 import {
+  PAGES_LIMIT,
   VSCODETHEMES_URL,
   PROGRAMMING_LANGUAGES,
-  PAGES_LIMIT,
 } from '../config/constants';
 import * as url from 'url';
+import { S3Client } from './s3Client';
+import * as cliProgress from 'cli-progress';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { getThemeNameFromURL } from '../util/urlOperations/getThemeNameFromURL';
 import { replaceLanguageInURL } from '../util/urlOperations/replaceLanguageInURL';
-import { S3Client } from './s3Client';
+import { progressBarConfigurations } from '../config/progressBarConfigurations';
 
 export class VscodeThemesCrawler {
   browser: Browser;
   page: Page;
   s3: S3Client;
+  progressBar: cliProgress.SingleBar;
 
   constructor() {
     this.browser = {} as Browser;
     this.page = {} as Page;
     this.s3 = new S3Client();
+    this.progressBar = new cliProgress.SingleBar(
+      progressBarConfigurations.opt,
+      progressBarConfigurations.preset,
+    );
   }
 
   async initializeBrowser() {
@@ -27,11 +34,17 @@ export class VscodeThemesCrawler {
 
   async execute() {
     await this.initializeBrowser();
-
-    for (let page = 1; page <= PAGES_LIMIT; page++)
-      await this.processPage(page);
-
+    await this.processAllPages();
     await this.closeBrowser();
+  }
+
+  async processAllPages() {
+    this.progressBar.start(PAGES_LIMIT, 0);
+    for (let page = 1; page <= PAGES_LIMIT; page++) {
+      this.progressBar.update(page);
+      await this.processPage(page);
+    }
+    this.progressBar.stop();
   }
 
   async processPage(page: number) {
