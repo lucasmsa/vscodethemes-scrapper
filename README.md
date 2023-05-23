@@ -1,10 +1,10 @@
-# ❖ Vscode Themes Crawler
+# 🕸️ Vscode Themes Crawler
 This is a web scraping project that is designed to get images from the [Vscode Themes website](https://vscodethemes.com/). It processes the pages, retrieves the themes images, and uploads them to an Amazon S3 bucket. It's built with Node.js and Typescript, using Puppeteer for the web scraping tasks
 
-## 🞜 Purpose
+## Purpose
 The main goal of this project is to fetch vscode theme images based on its 7 different programming languages available on the website. It cycles through different pages on the Vscode Themes website, retrieves the themes' images, processes and stores them to a specified S3 bucket separating the folders based on the theme. This project contains the data collection part for a bigger project that will use the images to train a machine learning model 
 
-## 🞼 Technologies
+## Technologies
 The following technologies were used for this project:
 
 - **Node.js** with **Typescript**
@@ -34,13 +34,13 @@ $ yarn add
 $ yarn run dev
 ```
 
-## ✦ Testing 
+## Testing 
 To run the tests, use the following command:
 ```
 $ yarn run test
 ```
 
-### ⎇ Final Thoughts
+### Final Thoughts
 
 ---
 
