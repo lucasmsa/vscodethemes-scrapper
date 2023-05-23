@@ -1,7 +1,10 @@
 import puppeteer from 'puppeteer';
 import { VscodeThemesCrawler } from '../services/vscodethemesCrawler';
-import * as fs from 'fs';
 import { PAGES_LIMIT } from '../config/constants';
+
+jest.mock('@aws-sdk/client-s3', () => ({
+  S3: jest.fn(),
+}));
 
 jest.mock('puppeteer', () => ({
   launch: jest.fn().mockResolvedValue({
@@ -47,7 +50,7 @@ describe('VscodeThemesCrawler', () => {
     expect(crawler.browser.close).toHaveBeenCalledTimes(1);
   });
 
-  test(`should iterate over all of the ${PAGES_LIMIT} images`, async () => {
+  test(`should iterate over all of the ${PAGES_LIMIT} pages`, async () => {
     const mockedImages = ['image1.png', 'image2.png', 'image3.png'];
 
     jest.spyOn(crawler, 'fetchPageImages').mockResolvedValue(mockedImages);

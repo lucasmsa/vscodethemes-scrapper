@@ -1,24 +1,23 @@
 import {
-  OUTPUT_DIR,
   VSCODETHEMES_URL,
   PROGRAMMING_LANGUAGES,
   PAGES_LIMIT,
 } from '../config/constants';
-import * as fs from 'fs';
 import * as url from 'url';
-import * as path from 'path';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import { GeneratePageImageURL } from '../types/GeneratePageImageURL';
 import { getThemeNameFromURL } from '../util/urlOperations/getThemeNameFromURL';
 import { replaceLanguageInURL } from '../util/urlOperations/replaceLanguageInURL';
+import { S3Client } from './s3Client';
 
 export class VscodeThemesCrawler {
   browser: Browser;
   page: Page;
+  s3: S3Client;
 
   constructor() {
     this.browser = {} as Browser;
     this.page = {} as Page;
+    this.s3 = new S3Client();
   }
 
   async initializeBrowser() {
@@ -56,12 +55,8 @@ export class VscodeThemesCrawler {
     for (const initialThemeImageURL of pageThemesImageURLs) {
       await this.page.goto(initialThemeImageURL);
 
-      const themeURLName = getThemeNameFromURL(initialThemeImageURL) as string;
+      const themeURLName = getThemeNameFromURL(initialThemeImageURL);
       const themeOfficialName = await this.getThemeOfficialName();
-
-      const themeDirectory = path.join(OUTPUT_DIR, themeOfficialName);
-
-      if (!fs.existsSync(themeDirectory)) fs.mkdirSync(themeDirectory);
 
       for (const language of PROGRAMMING_LANGUAGES) {
         const themeImageURL = replaceLanguageInURL(
@@ -72,27 +67,16 @@ export class VscodeThemesCrawler {
         await this.page.waitForSelector('svg > rect:nth-child(1)');
         const themeImage = await this.page.$('svg > rect:nth-child(1)');
 
-        const outputPath = this.generatePageImageURL({
-          themeOfficialName,
-          themeURLName,
-          language,
-        });
+        const buffer = (await themeImage?.screenshot()) as Buffer;
+        const key = `${themeOfficialName}/${themeURLName}-${language}.png`;
 
-        await themeImage?.screenshot({ path: outputPath });
+        await this.s3.uploadFile({
+          bucket: process.env.BUCKET_NAME as string,
+          key,
+          body: buffer,
+        });
       }
     }
-  }
-
-  generatePageImageURL({
-    language,
-    themeOfficialName,
-    themeURLName,
-  }: GeneratePageImageURL) {
-    return path.join(
-      OUTPUT_DIR,
-      themeOfficialName,
-      `${themeURLName}-${language}.png`,
-    );
   }
 
   async getThemeOfficialName() {
