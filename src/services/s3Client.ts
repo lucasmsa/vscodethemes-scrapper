@@ -21,6 +21,6 @@ export class S3Client {
       Body: body,
     };
 
-    return this.s3.putObject(params);
+    await this.s3.putObject(params);
   }
 }
