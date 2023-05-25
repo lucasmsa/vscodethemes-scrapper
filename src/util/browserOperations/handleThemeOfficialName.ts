@@ -6,5 +6,5 @@ export async function handleThemeOfficialName(page: Page) {
     (el) => el?.textContent,
     themeOfficialNameElement,
   )) as string;
-  return themeOfficialName?.replace('/', '|');
+  return themeOfficialName?.replace(/\//g, '-');
 }

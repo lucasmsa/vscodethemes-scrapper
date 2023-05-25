@@ -5,7 +5,7 @@ import {
 import { PuppeteerExtra } from 'puppeteer-extra';
 
 export async function handleInitialBrowserSetup(puppeteer: PuppeteerExtra) {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: 'new' });
   const page = await browser.newPage();
   await page.setUserAgent(PUPPETEER_USER_AGENT);
   await page.setExtraHTTPHeaders({

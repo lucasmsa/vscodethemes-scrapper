@@ -40,7 +40,7 @@ export class VscodeThemesCrawler {
       progressBarConfigurations.opt,
       progressBarConfigurations.preset,
     );
-    this.pageNumber = 7;
+    this.pageNumber = 36;
   }
 
   async initializeBrowser() {
@@ -52,17 +52,17 @@ export class VscodeThemesCrawler {
   async execute() {
     await this.initializeBrowser();
     await this.processAllPages();
-    await this.closeBrowser();
+    await this.quitBrowser();
   }
 
   async processAllPages() {
-    this.progressBar.start(PAGES_LIMIT, 1);
+    this.progressBar.start(PAGES_LIMIT, this.pageNumber);
     while (this.pageNumber <= PAGES_LIMIT) {
-      this.progressBar.update(this.pageNumber);
       await this.processPage(this.pageNumber);
       this.pageNumber++;
+      this.progressBar.update(this.pageNumber);
+      await this.restartBrowser();
     }
-    this.progressBar.stop();
   }
 
   async gotoPage(pageURL: string) {
@@ -82,7 +82,9 @@ export class VscodeThemesCrawler {
   async processPage(page: number) {
     const newPageURL = url.resolve(VSCODETHEMES_URL, `?page=${page}`);
     await this.gotoPage(newPageURL);
+
     const pageThemesImageURLs = await this.fetchPageImageURLs();
+
     await this.savePageImageURLs(pageThemesImageURLs);
   }
 
@@ -94,8 +96,11 @@ export class VscodeThemesCrawler {
 
   async savePageImageURLs(pageThemesImageURLs: string[]) {
     for (const initialThemeImageURL of pageThemesImageURLs) {
-      await this.gotoPage(initialThemeImageURL);
       const themeURLName = getThemeNameFromURL(initialThemeImageURL);
+
+      if (!themeURLName.length) continue;
+
+      await this.gotoPage(initialThemeImageURL);
       const themeOfficialName = await handleThemeOfficialName(this.page);
       await this.saveImagesForAllLanguages({
         initialThemeImageURL,
@@ -139,10 +144,6 @@ export class VscodeThemesCrawler {
 
   async restartBrowser() {
     await this.browser.close();
-
-    this.browser = {} as Browser;
-    this.page = {} as Page;
-
     await this.execute();
   }
 
@@ -154,7 +155,8 @@ export class VscodeThemesCrawler {
     }
   }
 
-  async closeBrowser() {
+  async quitBrowser() {
     this.browser.close();
+    this.progressBar.stop();
   }
 }
