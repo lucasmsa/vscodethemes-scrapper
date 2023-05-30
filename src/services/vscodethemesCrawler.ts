@@ -156,7 +156,7 @@ export class VscodeThemesCrawler {
   }
 
   async quitBrowser() {
-    this.browser.close();
+    await this.browser.close();
     this.progressBar.stop();
   }
 }
