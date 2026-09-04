@@ -12,7 +12,7 @@
     "index": "npm run build:index -w @vscodethemes/scrape",
     "eval": "npm run eval -w @vscodethemes/scrape --",
     "dev": "npm run dev -w @vscodethemes/web",
-    "build": "npm run build:index && npm run build -w @vscodethemes/web",
+    "build": "npm run build:index -w @vscodethemes/scrape && npm run build -w @vscodethemes/web",
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write \"packages/**/*.{ts,tsx,css,json}\" \"docs/**/*.md\" README.md"

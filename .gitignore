@@ -19,3 +19,5 @@ model/**/__pycache__/
 playwright-report/
 test-results/
 data/themes.json
+.vercel
+.env*
