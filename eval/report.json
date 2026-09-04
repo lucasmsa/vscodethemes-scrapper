@@ -1,0 +1,446 @@
+{
+ "runs": [
+  {
+   "approach": "knn",
+   "gallery": 32742,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 22.05,
+   "top1Tied": 25.55,
+   "top5": 33.77,
+   "msPerQuery": 62.9,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 7.27,
+     "top1Tied": 9.72,
+     "top5": 16
+    },
+    "window": {
+     "n": 1348,
+     "top1": 36.28,
+     "top1Tied": 41.17,
+     "top5": 50.89
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 22.14,
+     "top1Tied": 25.26,
+     "top5": 33.88
+    }
+   },
+   "generatedAt": "2026-09-04T13:46:12.675Z"
+  },
+  {
+   "approach": "cnn",
+   "gallery": 2000,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "top1": 53.12,
+   "top1Tied": 53.25,
+   "top5": 75.05,
+   "msPerQuery": 6,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 33.38,
+     "top1Tied": 33.46,
+     "top5": 57.66
+    },
+    "window": {
+     "n": 1348,
+     "top1": 75.45,
+     "top1Tied": 75.59,
+     "top5": 93.03
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 49.93,
+     "top1Tied": 50.07,
+     "top5": 73.92
+    }
+   },
+   "generatedAt": "2026-09-04T13:48:46.542286+00:00"
+  },
+  {
+   "approach": "knn",
+   "gallery": 32742,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 33.83,
+   "top1Tied": 43.27,
+   "top5": 50.85,
+   "msPerQuery": 50.8,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 12.1,
+     "top1Tied": 17.99,
+     "top5": 27.03
+    },
+    "window": {
+     "n": 1348,
+     "top1": 51.63,
+     "top1Tied": 64.39,
+     "top5": 70.62
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 37.07,
+     "top1Tied": 46.66,
+     "top5": 54.16
+    }
+   },
+   "generatedAt": "2026-09-04T13:54:09.432Z"
+  },
+  {
+   "approach": "knn",
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 33.83,
+   "top1Tied": 43.27,
+   "top5": 50.85,
+   "top1Class": 39.65,
+   "top5Class": 56.88,
+   "msPerQuery": 71.6,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 12.1,
+     "top1Tied": 17.99,
+     "top5": 27.03,
+     "top1Class": 14.78,
+     "top5Class": 32.39
+    },
+    "window": {
+     "n": 1348,
+     "top1": 51.63,
+     "top1Tied": 64.39,
+     "top5": 70.62,
+     "top1Class": 60.16,
+     "top5Class": 77.67
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 37.07,
+     "top1Tied": 46.66,
+     "top5": 54.16,
+     "top1Class": 43.24,
+     "top5Class": 59.81
+    }
+   },
+   "generatedAt": "2026-09-04T17:01:02.119Z"
+  },
+  {
+   "approach": "cnn",
+   "classes": 2000,
+   "epochs": null,
+   "gallery": 2000,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "top1": 53.12,
+   "top1Tied": 53.25,
+   "top5": 75.05,
+   "top1Class": 54.6,
+   "top5Class": 75.9,
+   "msPerQuery": 6.5,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 33.38,
+     "top1Tied": 33.46,
+     "top5": 57.66,
+     "top1Class": 34,
+     "top5Class": 58.42
+    },
+    "window": {
+     "n": 1348,
+     "top1": 75.45,
+     "top1Tied": 75.59,
+     "top5": 93.03,
+     "top1Class": 77.6,
+     "top5Class": 93.69
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 49.93,
+     "top1Tied": 50.07,
+     "top5": 73.92,
+     "top1Class": 51.56,
+     "top5Class": 75.04
+    }
+   },
+   "generatedAt": "2026-09-04T17:23:20.897490+00:00"
+  },
+  {
+   "approach": "cnn",
+   "classes": 2000,
+   "epochs": null,
+   "gallery": 32741,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "top1": 28.8,
+   "top1Tied": 29.32,
+   "top5": 47.48,
+   "top1Class": 32.7,
+   "top5Class": 51.98,
+   "msPerQuery": 7.6,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 11.1,
+     "top1Tied": 11.33,
+     "top5": 25.19,
+     "top1Class": 13.09,
+     "top5Class": 28.94
+    },
+    "window": {
+     "n": 1348,
+     "top1": 50.59,
+     "top1Tied": 51.34,
+     "top5": 72.77,
+     "top1Class": 56.68,
+     "top5Class": 77.15
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 24.15,
+     "top1Tied": 24.74,
+     "top5": 43.76,
+     "top1Class": 27.71,
+     "top5Class": 49.11
+    }
+   },
+   "generatedAt": "2026-09-04T17:26:40.102165+00:00"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 39.45,
+   "top1Tied": 48.17,
+   "top5": 58.05,
+   "top1Class": 43.6,
+   "top5Class": 62.58,
+   "msPerQuery": 36,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 15.16,
+     "top1Tied": 22.97,
+     "top5": 34.15,
+     "top1Class": 17,
+     "top5Class": 37.52
+    },
+    "window": {
+     "n": 1348,
+     "top1": 62.91,
+     "top1Tied": 71.88,
+     "top5": 80.86,
+     "top1Class": 68.69,
+     "top5Class": 85.39
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 39.52,
+     "top1Tied": 48.89,
+     "top5": 58.4,
+     "top1Class": 44.28,
+     "top5Class": 64.04
+    }
+   },
+   "generatedAt": "2026-09-04T17:30:36.164Z"
+  },
+  {
+   "approach": "cnn",
+   "classes": 32742,
+   "epochs": 14,
+   "gallery": 32741,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "top1": 35.7,
+   "top1Tied": 36.4,
+   "top5": 54.08,
+   "top1Class": 38.35,
+   "top5Class": 57.02,
+   "msPerQuery": 7.5,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 13.32,
+     "top1Tied": 13.48,
+     "top5": 28.48,
+     "top1Class": 14.78,
+     "top5Class": 30.86
+    },
+    "window": {
+     "n": 1348,
+     "top1": 62.76,
+     "top1Tied": 63.8,
+     "top5": 81.6,
+     "top1Class": 67.06,
+     "top5Class": 84.64
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 30.31,
+     "top1Tied": 31.2,
+     "top5": 51.34,
+     "top1Class": 32.47,
+     "top5Class": 54.75
+    }
+   },
+   "generatedAt": "2026-09-04T17:44:35.165734+00:00"
+  },
+  {
+   "approach": "cnn-onnx",
+   "engine": "onnx-in-node",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 33.42,
+   "top1Tied": 39.05,
+   "top5": 52.2,
+   "top1Class": 36,
+   "top5Class": 55.4,
+   "msPerQuery": 25.6,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 13.94,
+     "top1Tied": 18.84,
+     "top5": 28.94,
+     "top1Class": 15.47,
+     "top5Class": 31.7
+    },
+    "window": {
+     "n": 1348,
+     "top1": 57.64,
+     "top1Tied": 64.09,
+     "top5": 77.74,
+     "top1Class": 61.65,
+     "top5Class": 81.53
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 28.08,
+     "top1Tied": 33.58,
+     "top5": 49.18,
+     "top1Class": 30.24,
+     "top5Class": 52.23
+    }
+   },
+   "generatedAt": "2026-09-04T17:46:44.259Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 42.27,
+   "top1Tied": 50.6,
+   "top5": 61.08,
+   "top1Class": 45.88,
+   "top5Class": 64.28,
+   "msPerQuery": 25.4,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 17.3,
+     "top1Tied": 24.04,
+     "top5": 35.83,
+     "top1Class": 18.76,
+     "top5Class": 38.51
+    },
+    "window": {
+     "n": 1348,
+     "top1": 65.13,
+     "top1Tied": 74.48,
+     "top5": 83.09,
+     "top1Class": 70.03,
+     "top5Class": 86.35
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 43.61,
+     "top1Tied": 52.45,
+     "top5": 63.52,
+     "top1Class": 47.99,
+     "top5Class": 67.16
+    }
+   },
+   "generatedAt": "2026-09-04T17:48:26.627Z"
+  }
+ ]
+}

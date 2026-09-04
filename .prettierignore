@@ -1,0 +1,9 @@
+data/
+previews/
+renders/
+eval/queries/
+packages/scrape/src/__fixtures__/
+packages/web/public/
+package-lock.json
+model/
+dist/

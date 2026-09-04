@@ -1,0 +1,74 @@
+{
+  "hybrid": {
+    "run": "hybrid",
+    "gallery": 32742,
+    "queries": 4000,
+    "window": {
+      "n": 1348,
+      "top1": 65.13,
+      "top5": 83.09,
+      "top5Class": 86.35
+    },
+    "partial": {
+      "n": 1346,
+      "top1": 43.61,
+      "top5": 63.52,
+      "top5Class": 67.16
+    },
+    "editor": {
+      "n": 1306,
+      "top1": 17.3,
+      "top5": 35.83,
+      "top5Class": 38.51
+    },
+    "generatedAt": "2026-09-04T17:48:26.627Z"
+  },
+  "cnn": {
+    "run": "cnn-onnx",
+    "gallery": 32742,
+    "queries": 4000,
+    "window": {
+      "n": 1348,
+      "top1": 57.64,
+      "top5": 77.74,
+      "top5Class": 81.53
+    },
+    "partial": {
+      "n": 1346,
+      "top1": 28.08,
+      "top5": 49.18,
+      "top5Class": 52.23
+    },
+    "editor": {
+      "n": 1306,
+      "top1": 13.94,
+      "top5": 28.94,
+      "top5Class": 31.7
+    },
+    "generatedAt": "2026-09-04T17:46:44.259Z"
+  },
+  "knn": {
+    "run": "knn",
+    "gallery": 32742,
+    "queries": 4000,
+    "window": {
+      "n": 1348,
+      "top1": 51.63,
+      "top5": 70.62,
+      "top5Class": 77.67
+    },
+    "partial": {
+      "n": 1346,
+      "top1": 37.07,
+      "top5": 54.16,
+      "top5Class": 59.81
+    },
+    "editor": {
+      "n": 1306,
+      "top1": 12.1,
+      "top5": 27.03,
+      "top5Class": 32.39
+    },
+    "generatedAt": "2026-09-04T17:01:02.119Z"
+  }
+}
