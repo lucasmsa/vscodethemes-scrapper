@@ -19,7 +19,7 @@ interface RunStats {
 
 const ACCURACY = accuracy as Partial<Record<Engine, RunStats>>;
 
-const pct = (value: number) => `${value.toFixed(1)}%`;
+const pct = (value: number) => `${Math.round(value)}%`;
 
 interface ConfidenceProps {
   engine: Engine;
@@ -36,15 +36,32 @@ export function Confidence({ engine, layout }: ConfidenceProps) {
   const stats = layout === 'window' ? run?.window : run?.editor;
   if (!run || !stats) return null;
   const cut = layout === 'window' ? 'whole editor windows' : 'code-only crops';
-  const top5 = (stats.top5Class ?? stats.top5).toFixed(1);
   return (
-    <p className="confidence" data-testid="confidence">
-      In testing on {stats.n.toLocaleString('en-US')} held-out previews cut as{' '}
-      {cut}, {ENGINE_NAME[engine]} put the right palette in its top five {top5}%
-      of the time and first {stats.top1.toFixed(1)}% of the time, against all{' '}
-      {run.gallery.toLocaleString('en-US')} themes.
-      {layout === 'editor-only' &&
-        ' A screenshot with the activity bar and status bar in it does much better.'}
-    </p>
+    <div className="confidence" data-testid="confidence">
+      <h4 className="confidence__title">how often this is right</h4>
+      <dl className="confidence__rates">
+        <div>
+          <dt>in the top five</dt>
+          <dd>{pct(stats.top5Class ?? stats.top5)}</dd>
+        </div>
+        <div>
+          <dt>ranked first</dt>
+          <dd>{pct(stats.top1)}</dd>
+        </div>
+      </dl>
+      <p className="confidence__note">
+        Measured on {stats.n.toLocaleString('en-US')} screenshots the model
+        never saw, cut as {cut}, searching all{' '}
+        {run.gallery.toLocaleString('en-US')} themes with{' '}
+        {ENGINE_NAME[engine]}.
+      </p>
+      {layout === 'editor-only' && run.window && (
+        <p className="confidence__note">
+          This one is code only, so it has less to go on. A screenshot with the
+          activity bar and status bar in it reaches{' '}
+          {pct(run.window.top5Class ?? run.window.top5)} in the top five.
+        </p>
+      )}
+    </div>
   );
 }
