@@ -1,4 +1,6 @@
 import * as ort from 'onnxruntime-web/wasm';
+import ortRuntimeUrl from 'onnxruntime-web/ort-wasm-simd-threaded.mjs?url';
+import ortWasmUrl from 'onnxruntime-web/ort-wasm-simd-threaded.wasm?url';
 import type { PixelImage } from '@vscodethemes/shared';
 import { preprocess } from './similarity.ts';
 
@@ -18,7 +20,7 @@ export interface Model {
 }
 
 export async function loadModel(baseUrl: string): Promise<Model> {
-  ort.env.wasm.wasmPaths = `${baseUrl}ort/`;
+  ort.env.wasm.wasmPaths = { wasm: ortWasmUrl, mjs: ortRuntimeUrl };
   ort.env.wasm.numThreads = 1;
   const [metaResponse, galleryResponse, session] = await Promise.all([
     fetch(`${baseUrl}model/gallery.json`),

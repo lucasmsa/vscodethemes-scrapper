@@ -18,5 +18,4 @@ model/__pycache__/
 model/**/__pycache__/
 playwright-report/
 test-results/
-packages/web/public/ort/
 data/themes.json
