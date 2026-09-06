@@ -151,10 +151,77 @@ function byRank(a: IndexedTheme, b: IndexedTheme): number {
   return ra - rb;
 }
 
+/** Worst installs rank in the 2026-09-04 crawl: 15,873 extensions, ranks 1 to 15,876. */
+export const WORST_INSTALLS_RANK = 15876;
+
+/**
+ * Installs rank folded into the score as a prior. `strength` is charged in the
+ * same unit the distance is measured in, weighted CIE Lab delta E: a theme at
+ * `worstRank` scores `strength` further from the screenshot than one at rank 1.
+ * Strength 0 leaves the ordering to the colors alone.
+ */
+export interface RankPrior {
+  strength: number;
+  worstRank: number;
+}
+
+export const NO_RANK_PRIOR: RankPrior = {
+  strength: 0,
+  worstRank: WORST_INSTALLS_RANK,
+};
+
+export const rankPriorOfStrength = (strength: number): RankPrior => ({
+  strength,
+  worstRank: WORST_INSTALLS_RANK,
+});
+
+/**
+ * Installs are heavy tailed, so the penalty grows with log10(rank): 0 at rank 1,
+ * half of `strength` around rank 126, all of it at `worstRank`. Rank 0 means the
+ * crawl did not report one and is charged the full penalty.
+ */
+export function rankPenalty(rank: number, prior: RankPrior): number {
+  if (prior.strength === 0) return 0;
+  const known = rank > 0 ? rank : prior.worstRank;
+  const clamped = Math.min(Math.max(known, 1), prior.worstRank);
+  return (prior.strength * Math.log10(clamped)) / Math.log10(prior.worstRank);
+}
+
+export const priorScore = (
+  distance: number,
+  theme: IndexedTheme,
+  prior: RankPrior,
+): number => distance + rankPenalty(theme.rank, prior);
+
+export interface ColorScored {
+  theme: IndexedTheme;
+  distance: number;
+  similarity?: number;
+}
+
+/**
+ * The order the model-then-colors path uses: the prior-adjusted distance decides
+ * and model similarity breaks what is left. At strength 0 this is the color
+ * distance alone, which is what the page ships.
+ */
+export function orderByScore<T extends ColorScored>(
+  scored: T[],
+  prior: RankPrior = NO_RANK_PRIOR,
+): T[] {
+  return [...scored].sort(
+    (a, b) =>
+      priorScore(a.distance, a.theme, prior) -
+        priorScore(b.distance, b.theme, prior) ||
+      (b.similarity ?? 0) - (a.similarity ?? 0),
+  );
+}
+
+/** Colors alone over every theme: installs rank stays a tiebreak, not part of the score. */
 export function rankThemes(
   observation: Observation,
   prepared: PreparedTheme[],
   k = 5,
+  prior: RankPrior = NO_RANK_PRIOR,
 ): Match[] {
   const scored = prepared.map((p) => ({
     theme: p.theme,
@@ -162,7 +229,8 @@ export function rankThemes(
   }));
   scored.sort(
     (a, b) =>
-      a.distance - b.distance ||
+      priorScore(a.distance, a.theme, prior) -
+        priorScore(b.distance, b.theme, prior) ||
       byRank(a.theme, b.theme) ||
       a.theme.displayName.localeCompare(b.theme.displayName),
   );

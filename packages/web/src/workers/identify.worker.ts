@@ -3,6 +3,7 @@ import {
   collapseToClasses,
   expandThemeIndex,
   extractObservation,
+  orderByScore,
   prepareThemes,
   rankThemes,
   scoreTheme,
@@ -72,19 +73,16 @@ async function rank(pixels: Parameters<typeof extractObservation>[0]) {
       CANDIDATES,
     );
     // The model narrows 32,742 themes to 200 candidates; the measured colors decide the order.
-    scored = hits
-      .map(({ row, similarity }) => {
+    scored = orderByScore(
+      hits.map(({ row, similarity }) => {
         const candidate = prepared![row]!;
         return {
           theme: candidate.theme,
           similarity,
           ...scoreTheme(observation, candidate),
         };
-      })
-      .sort(
-        (a, b) =>
-          a.distance - b.distance || (b.similarity ?? 0) - (a.similarity ?? 0),
-      );
+      }),
+    );
     engine = 'hybrid';
   } else {
     scored = rankThemes(observation, prepared!, CANDIDATES);
