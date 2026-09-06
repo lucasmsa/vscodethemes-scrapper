@@ -4,7 +4,12 @@ import { hexToRgb } from './color.ts';
 import type { Observation } from './extract.ts';
 import type { IndexedTheme } from './themeIndex.ts';
 import {
+  NO_RANK_PRIOR,
+  WORST_INSTALLS_RANK,
+  orderByScore,
   prepareThemes,
+  rankPenalty,
+  rankPriorOfStrength,
   rankThemes,
   resolvedColor,
   themeKind,
@@ -138,6 +143,120 @@ describe('rankThemes', () => {
     };
     const [first] = rankThemes(lightWindow, prepared, 1);
     expect(first?.theme.id).toBe('light');
+    expect(first?.distance).toBe(0);
+  });
+});
+
+describe('rankPenalty', () => {
+  const prior = rankPriorOfStrength(2);
+
+  it('charges nothing at rank 1 and the full strength at the worst rank', () => {
+    expect(rankPenalty(1, prior)).toBe(0);
+    expect(rankPenalty(WORST_INSTALLS_RANK, prior)).toBeCloseTo(2, 10);
+  });
+
+  it('grows with log10(rank), so rank 126 costs about half of a rank 15,876', () => {
+    expect(rankPenalty(126, prior)).toBeCloseTo(1, 1);
+    expect(rankPenalty(100, prior)).toBeLessThan(rankPenalty(1000, prior));
+    expect(rankPenalty(1000, prior)).toBeLessThan(rankPenalty(10000, prior));
+  });
+
+  it('charges an unknown rank (0) and anything past the worst rank the full strength', () => {
+    expect(rankPenalty(0, prior)).toBeCloseTo(2, 10);
+    expect(rankPenalty(99999, prior)).toBeCloseTo(2, 10);
+  });
+
+  it('is inert at strength 0, whatever the rank', () => {
+    expect(rankPenalty(1, NO_RANK_PRIOR)).toBe(0);
+    expect(rankPenalty(0, NO_RANK_PRIOR)).toBe(0);
+    expect(rankPenalty(9000, NO_RANK_PRIOR)).toBe(0);
+  });
+});
+
+describe('orderByScore', () => {
+  const popular = make('popular', {}, 5);
+  const obscure = make('obscure', {}, 12000);
+
+  it('leaves the color order alone at strength 0', () => {
+    const ordered = orderByScore([
+      { theme: popular, distance: 4 },
+      { theme: obscure, distance: 1 },
+    ]);
+    expect(ordered.map((m) => m.theme.id)).toEqual(['obscure', 'popular']);
+  });
+
+  it('lifts the more installed theme over an equally distant obscure one', () => {
+    const ordered = orderByScore(
+      [
+        { theme: obscure, distance: 1 },
+        { theme: popular, distance: 1 },
+      ],
+      rankPriorOfStrength(1),
+    );
+    expect(ordered.map((m) => m.theme.id)).toEqual(['popular', 'obscure']);
+  });
+
+  it('does not let a weak prior overturn a color difference it cannot pay for', () => {
+    const ordered = orderByScore(
+      [
+        { theme: popular, distance: 4 },
+        { theme: obscure, distance: 1 },
+      ],
+      rankPriorOfStrength(1),
+    );
+    expect(ordered.map((m) => m.theme.id)).toEqual(['obscure', 'popular']);
+  });
+
+  it('overturns a 3 delta E gap once the prior is charged 10', () => {
+    const ordered = orderByScore(
+      [
+        { theme: popular, distance: 4 },
+        { theme: obscure, distance: 1 },
+      ],
+      rankPriorOfStrength(10),
+    );
+    expect(ordered.map((m) => m.theme.id)).toEqual(['popular', 'obscure']);
+  });
+
+  it('leaves an exact color tie to model similarity, not to installs', () => {
+    const ordered = orderByScore([
+      { theme: popular, distance: 1, similarity: 0.4 },
+      { theme: obscure, distance: 1, similarity: 0.9 },
+    ]);
+    expect(ordered.map((m) => m.theme.id)).toEqual(['obscure', 'popular']);
+  });
+});
+
+describe('rankThemes with a prior', () => {
+  const fullWindow: Observation = {
+    colors: {
+      editorBackground: hexToRgb('#282a36'),
+      editorForeground: hexToRgb('#f8f8f2'),
+      activityBarBackground: hexToRgb('#343746'),
+      statusBarBackground: hexToRgb('#191a21'),
+    },
+    topStrips: [hexToRgb('#21222c'), hexToRgb('#191a21')],
+    layout: 'window',
+  };
+
+  it('keeps the exact match first: rank 3 pays less than rank 900 at the same distance', () => {
+    const [first, second] = rankThemes(
+      fullWindow,
+      withClone,
+      2,
+      rankPriorOfStrength(2),
+    );
+    expect(first?.theme.id).toBe('dracula');
+    expect(second?.theme.id).toBe('a-clone-of-dracula');
+  });
+
+  it('reports the color distance, not the prior-adjusted score', () => {
+    const [first] = rankThemes(
+      fullWindow,
+      withClone,
+      1,
+      rankPriorOfStrength(5),
+    );
     expect(first?.distance).toBe(0);
   });
 });

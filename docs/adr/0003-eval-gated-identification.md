@@ -39,7 +39,7 @@ Accepted
 <!-- /generated -->
 
 <!-- generated: eval notes -->
-- Model then colors, page code, trained on 32,742 themes, 14 epochs, searching 32,742 themes: top-1 42.3%, top-5 61.1% (64.3% per palette class). By crop, top-5: whole window 83.1%, corner 63.5%, code only 35.8%. 25.4 ms per query.
+- Model then colors, page code, trained on 32,742 themes, 14 epochs, searching 32,742 themes: top-1 42.3%, top-5 61.1% (64.3% per palette class). By crop, top-5: whole window 83.1%, corner 63.5%, code only 35.8%. 25.7 ms per query.
 - Model only, page code, trained on 32,742 themes, 14 epochs, searching 32,742 themes: top-1 33.4%, top-5 52.2% (55.4% per palette class). By crop, top-5: whole window 77.7%, corner 49.2%, code only 28.9%. 25.6 ms per query.
 - Model only, PyTorch, trained on 2,000 themes, searching 32,741 themes: top-1 28.8%, top-5 47.5% (52.0% per palette class). By crop, top-5: whole window 72.8%, corner 43.8%, code only 25.2%. 7.6 ms per query.
 - Model only, PyTorch, trained on 32,742 themes, 14 epochs, searching 32,741 themes: top-1 35.7%, top-5 54.1% (57.0% per palette class). By crop, top-5: whole window 81.6%, corner 51.3%, code only 28.5%. 7.5 ms per query.

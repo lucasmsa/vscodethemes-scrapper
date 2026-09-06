@@ -10,7 +10,9 @@ import {
   collapseToClasses,
   expandThemeIndex,
   extractObservation,
+  orderByScore,
   prepareThemes,
+  rankPriorOfStrength,
   rankThemes,
   scoreTheme,
   type IndexedTheme,
@@ -53,12 +55,14 @@ const { values } = parseArgs({
       default: resolve(import.meta.dirname, '../../web/public/model'),
     },
     download: { type: 'boolean', default: true },
+    rankPrior: { type: 'string', default: '0' },
   },
 });
 
 const sampleSize = Number(values.themes);
 const seed = Number(values.seed);
 const perTheme = Number(values.perTheme);
+const prior = rankPriorOfStrength(Number(values.rankPrior));
 
 async function buildQuerySet(
   themes: Theme[],
@@ -230,6 +234,7 @@ async function score(
   return {
     approach,
     ...extra,
+    rankPrior: prior.strength,
     gallery: themes.length,
     paletteClasses: new Set(indexed.map((t) => t.paletteClass)).size,
     sampleSize,
@@ -260,6 +265,7 @@ async function candidatesFor(kind: string) {
           extractObservation(pixels),
           prepared,
           CANDIDATES,
+          prior,
         )) as Candidates,
     };
   }
@@ -304,13 +310,8 @@ async function candidatesFor(kind: string) {
     };
   }
   // hybrid: the model narrows the field, the measured colors decide the order.
-  const hybrid: Candidates = async (pixels) => {
-    const ranked = await retrieve(pixels);
-    return [...ranked].sort(
-      (a, b) =>
-        a.distance - b.distance || (b.similarity ?? 0) - (a.similarity ?? 0),
-    );
-  };
+  const hybrid: Candidates = async (pixels) =>
+    orderByScore(await retrieve(pixels), prior);
   return {
     approach: 'hybrid',
     extra: {

@@ -441,6 +441,413 @@
     }
    },
    "generatedAt": "2026-09-04T17:48:26.627Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 42.27,
+   "top1Tied": 50.6,
+   "top5": 61.08,
+   "top1Class": 45.88,
+   "top5Class": 64.28,
+   "msPerQuery": 28.5,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 17.3,
+     "top1Tied": 24.04,
+     "top5": 35.83,
+     "top1Class": 18.76,
+     "top5Class": 38.51
+    },
+    "window": {
+     "n": 1348,
+     "top1": 65.13,
+     "top1Tied": 74.48,
+     "top5": 83.09,
+     "top1Class": 70.03,
+     "top5Class": 86.35
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 43.61,
+     "top1Tied": 52.45,
+     "top5": 63.52,
+     "top1Class": 47.99,
+     "top5Class": 67.16
+    }
+   },
+   "generatedAt": "2026-09-06T16:35:28.446Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 0.25,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 37.05,
+   "top1Tied": 45.73,
+   "top5": 53.8,
+   "top1Class": 42.9,
+   "top5Class": 60.27,
+   "msPerQuery": 33.1,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 12.71,
+     "top1Tied": 19.6,
+     "top5": 29.56,
+     "top1Class": 15.62,
+     "top5Class": 35.15
+    },
+    "window": {
+     "n": 1348,
+     "top1": 58.53,
+     "top1Tied": 68.25,
+     "top5": 74.33,
+     "top1Class": 66.84,
+     "top5Class": 81.53
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 39.15,
+     "top1Tied": 48.51,
+     "top5": 56.76,
+     "top1Class": 45.39,
+     "top5Class": 63.37
+    }
+   },
+   "generatedAt": "2026-09-06T16:42:06.974Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 0.5,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 36.48,
+   "top1Tied": 45.2,
+   "top5": 53.23,
+   "top1Class": 42.58,
+   "top5Class": 60,
+   "msPerQuery": 32.2,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 12.56,
+     "top1Tied": 19.45,
+     "top5": 28.71,
+     "top1Class": 15.54,
+     "top5Class": 34.61
+    },
+    "window": {
+     "n": 1348,
+     "top1": 57.64,
+     "top1Tied": 67.51,
+     "top5": 74.04,
+     "top1Class": 66.32,
+     "top5Class": 81.53
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 38.48,
+     "top1Tied": 47.85,
+     "top5": 56.17,
+     "top1Class": 45.02,
+     "top5Class": 63.08
+    }
+   },
+   "generatedAt": "2026-09-06T16:44:16.643Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 1,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 35.45,
+   "top1Tied": 43.88,
+   "top5": 52.85,
+   "top1Class": 41.85,
+   "top5Class": 59.33,
+   "msPerQuery": 29.7,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 11.87,
+     "top1Tied": 18.38,
+     "top5": 28.02,
+     "top1Class": 15.24,
+     "top5Class": 33.61
+    },
+    "window": {
+     "n": 1348,
+     "top1": 56.38,
+     "top1Tied": 65.95,
+     "top5": 74.18,
+     "top1Class": 65.36,
+     "top5Class": 81.23
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 37.37,
+     "top1Tied": 46.51,
+     "top5": 55.57,
+     "top1Class": 44.13,
+     "top5Class": 62.33
+    }
+   },
+   "generatedAt": "2026-09-06T16:46:16.445Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 2,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 32.23,
+   "top1Tied": 39.35,
+   "top5": 49.98,
+   "top1Class": 38.27,
+   "top5Class": 56.98,
+   "msPerQuery": 71.8,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 10.49,
+     "top1Tied": 15.7,
+     "top5": 25.04,
+     "top1Class": 13.78,
+     "top5Class": 31.01
+    },
+    "window": {
+     "n": 1348,
+     "top1": 51.63,
+     "top1Tied": 59.94,
+     "top5": 71.51,
+     "top1Class": 59.87,
+     "top5Class": 79.23
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 33.88,
+     "top1Tied": 41.68,
+     "top5": 52.6,
+     "top1Class": 40.42,
+     "top5Class": 59.88
+    }
+   },
+   "generatedAt": "2026-09-06T16:51:04.871Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 5,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 24.32,
+   "top1Tied": 28.85,
+   "top5": 40.55,
+   "top1Class": 29.6,
+   "top5Class": 47.85,
+   "msPerQuery": 30.1,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 6.58,
+     "top1Tied": 9.72,
+     "top5": 17.46,
+     "top1Class": 9.72,
+     "top5Class": 23.12
+    },
+    "window": {
+     "n": 1348,
+     "top1": 40.28,
+     "top1Tied": 45.85,
+     "top5": 60.46,
+     "top1Class": 47.33,
+     "top5Class": 69.14
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 25.56,
+     "top1Tied": 30.39,
+     "top5": 43.02,
+     "top1Class": 31.13,
+     "top5Class": 50.52
+    }
+   },
+   "generatedAt": "2026-09-06T16:53:06.769Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 0.05,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 36.98,
+   "top1Tied": 45.4,
+   "top5": 53.88,
+   "top1Class": 42.5,
+   "top5Class": 60.2,
+   "msPerQuery": 26,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 12.71,
+     "top1Tied": 19.37,
+     "top5": 29.56,
+     "top1Class": 15.39,
+     "top5Class": 35.3
+    },
+    "window": {
+     "n": 1348,
+     "top1": 58.38,
+     "top1Tied": 68.03,
+     "top5": 74.48,
+     "top1Class": 66.32,
+     "top5Class": 81.45
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 39.08,
+     "top1Tied": 47.99,
+     "top5": 56.84,
+     "top1Class": 44.95,
+     "top5Class": 63.08
+    }
+   },
+   "generatedAt": "2026-09-06T16:54:58.680Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "rankPrior": 0,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 42.27,
+   "top1Tied": 50.6,
+   "top5": 61.08,
+   "top1Class": 45.88,
+   "top5Class": 64.28,
+   "msPerQuery": 25.7,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 17.3,
+     "top1Tied": 24.04,
+     "top5": 35.83,
+     "top1Class": 18.76,
+     "top5Class": 38.51
+    },
+    "window": {
+     "n": 1348,
+     "top1": 65.13,
+     "top1Tied": 74.48,
+     "top5": 83.09,
+     "top1Class": 70.03,
+     "top5Class": 86.35
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 43.61,
+     "top1Tied": 52.45,
+     "top5": 63.52,
+     "top1Class": 47.99,
+     "top5Class": 67.16
+    }
+   },
+   "generatedAt": "2026-09-06T16:58:33.569Z"
   }
  ]
 }
