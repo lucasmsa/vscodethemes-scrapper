@@ -6,11 +6,16 @@ import { resolve, join } from 'node:path';
 import {
   PREVIEW_LANGUAGES,
   buildThemeIndex,
+  LOOKALIKE_BAND,
+  classMembers,
   classMembersIndex,
   collapseToClasses,
   expandThemeIndex,
   extractObservation,
+  installsRank,
   orderByScore,
+  paletteDistance,
+  popularLookalike,
   prepareThemes,
   rankPriorOfStrength,
   rankThemes,
@@ -157,6 +162,76 @@ interface Tally {
   top5Class: number;
 }
 
+/**
+ * The popularity readout: among the candidates the ranking placed within `band` weighted
+ * delta E of its winner, the most installed one. Measured at several widths because the
+ * band is the only free parameter and its cost should be visible.
+ */
+const LOOKALIKE_BANDS = [0, 1, 1.5, LOOKALIKE_BAND, 5];
+
+interface LookTally {
+  n: number;
+  /** Readout renders, meaning it names a palette class other than the one shown first. */
+  fires: number;
+  /** Readout names a class the five collapsed results do not carry. */
+  notShown: number;
+  /** Readout names the query theme's class when the first result did not. */
+  rescue: number;
+  /** Query theme is among the candidates inside the band. */
+  truthInBand: number;
+  /** Query theme is inside the band and something inside it has more installs. */
+  truthOutranked: number;
+  bandSum: number;
+  /** How much further from the screenshot the readout sits than the first result. */
+  worseSum: number;
+  /** Readouts the page would label a different color, ΔE 10 and up. */
+  overTen: number;
+  aparts: number[];
+  readoutRanks: number[];
+  topRanks: number[];
+}
+
+const lookTally = (): LookTally => ({
+  n: 0,
+  fires: 0,
+  notShown: 0,
+  rescue: 0,
+  truthInBand: 0,
+  truthOutranked: 0,
+  bandSum: 0,
+  worseSum: 0,
+  overTen: 0,
+  aparts: [],
+  readoutRanks: [],
+  topRanks: [],
+});
+
+const median = (values: number[]) => {
+  if (values.length === 0) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.floor(sorted.length / 2)]!;
+};
+
+const summarizeLook = (t: LookTally, band: number) => {
+  const rate = (value: number, of: number) =>
+    of ? Number(((100 * value) / of).toFixed(2)) : 0;
+  return {
+    band,
+    fires: rate(t.fires, t.n),
+    notShownWhenFires: rate(t.notShown, t.fires),
+    rescue: rate(t.rescue, t.n),
+    truthInBand: rate(t.truthInBand, t.n),
+    truthOutranked: rate(t.truthOutranked, t.n),
+    truthOutrankedWhenInBand: rate(t.truthOutranked, t.truthInBand),
+    meanCandidates: t.n ? Number((t.bandSum / t.n).toFixed(2)) : 0,
+    meanDeltaEOverTop: t.fires ? Number((t.worseSum / t.fires).toFixed(2)) : 0,
+    medianApart: Number(median(t.aparts).toFixed(2)),
+    overTenWhenFires: rate(t.overTen, t.fires),
+    medianReadoutRank: median(t.readoutRanks),
+    medianTopRank: median(t.topRanks),
+  };
+};
+
 const tally = (): Tally => ({
   n: 0,
   top1: 0,
@@ -201,7 +276,10 @@ async function score(
   const classOf = new Map(indexed.map((t) => [t.id, t.paletteClass]));
   const byCrop = new Map<string, Tally>();
   const overall = tally();
+  const looks = new Map(LOOKALIKE_BANDS.map((band) => [band, lookTally()]));
   const started = performance.now();
+  // The readout sweep is instrumentation, not part of the path being timed.
+  let sweepMs = 0;
   for (const [n, spec] of specs.entries()) {
     if (n % 1000 === 0) console.log(`scoring ${n}/${specs.length}`);
     const pixels = await decodeToPixels(
@@ -217,6 +295,49 @@ async function score(
     const classRank = classes.findIndex(
       (c) => c.theme.paletteClass === classOf.get(spec.id),
     );
+    const truthClass = classOf.get(spec.id);
+    const truthRepresentative =
+      truthClass === undefined
+        ? undefined
+        : [...membersOf(truthClass)].sort(
+            (a, b) => installsRank(a) - installsRank(b),
+          )[0];
+    const sweepStarted = performance.now();
+    for (const [band, look] of looks) {
+      look.n++;
+      const winner = ranked[0]?.theme.palette;
+      const inBand = winner
+        ? ranked.filter((r) => paletteDistance(r.theme.palette, winner) <= band)
+        : [];
+      look.bandSum += inBand.length;
+      const readout = popularLookalike(ranked, membersOf, band);
+      if (readout) {
+        look.fires++;
+        look.worseSum += readout.score.distance - (ranked[0]?.distance ?? 0);
+        if (readout.score.distance >= 10) look.overTen++;
+        look.aparts.push(readout.apart);
+        look.readoutRanks.push(installsRank(readout.theme));
+        look.topRanks.push(installsRank(classes[0]!.theme));
+        if (
+          !classes.some(
+            (c) => c.theme.paletteClass === readout.theme.paletteClass,
+          )
+        )
+          look.notShown++;
+        if (
+          readout.theme.paletteClass === truthClass &&
+          classes[0]?.theme.paletteClass !== truthClass
+        )
+          look.rescue++;
+      }
+      if (!inBand.some((r) => r.theme.id === spec.id)) continue;
+      look.truthInBand++;
+      const mostInstalled = inBand
+        .map((r) => classMembers(r.theme, membersOf)[0]!)
+        .reduce((a, b) => (installsRank(b) < installsRank(a) ? b : a));
+      if (mostInstalled.id !== truthRepresentative?.id) look.truthOutranked++;
+    }
+    sweepMs += performance.now() - sweepStarted;
     const bucket = byCrop.get(spec.crop) ?? tally();
     for (const t of [bucket, overall]) {
       t.n++;
@@ -229,7 +350,7 @@ async function score(
     byCrop.set(spec.crop, bucket);
   }
   const msPerQuery = Number(
-    ((performance.now() - started) / specs.length).toFixed(1),
+    ((performance.now() - started - sweepMs) / specs.length).toFixed(1),
   );
   return {
     approach,
@@ -242,6 +363,9 @@ async function score(
     heldOut: HELD_OUT,
     queries: overall.n,
     ...summarize(overall),
+    lookalike: LOOKALIKE_BANDS.map((band) =>
+      summarizeLook(looks.get(band)!, band),
+    ),
     msPerQuery,
     byCrop: Object.fromEntries([...byCrop].map(([k, t]) => [k, summarize(t)])),
   };

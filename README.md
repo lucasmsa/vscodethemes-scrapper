@@ -49,6 +49,10 @@ the current site inlines in every page and writes one JSON file.
 6. The top five come back with the upstream preview beside your crop, the ΔE
    and what it means: under 1 is the same color, under 2.3 the eye cannot tell
    them apart, above 10 is a different color.
+7. Beside them the page names the most installed theme whose palette sits
+   within ΔE 2.3 of the winner's across those same regions, when that is not
+   the winner already. The ranking answers which theme the screenshot is; that
+   line answers which theme most people run that looks the same.
 
 Nothing is uploaded. Without the model files the page falls back to the color
 distance alone and says so in the status bar.

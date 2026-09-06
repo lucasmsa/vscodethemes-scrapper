@@ -21,7 +21,7 @@
       "top5": 35.83,
       "top5Class": 38.51
     },
-    "generatedAt": "2026-09-06T16:58:33.569Z"
+    "generatedAt": "2026-09-06T17:34:54.053Z"
   },
   "cnn": {
     "run": "cnn-onnx",

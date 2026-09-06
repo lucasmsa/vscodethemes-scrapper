@@ -144,6 +144,34 @@ export function scoreTheme(
   };
 }
 
+/** The five regions the ranking reads, at the weights it reads them with. */
+const PATTERN_FIELDS = [
+  ['editorBackground', WEIGHTS.editorBackground],
+  ['activityBarBackground', WEIGHTS.activityBarBackground],
+  ['statusBarBackground', WEIGHTS.statusBarBackground],
+  ['titleBarActiveBackground', WEIGHTS.topStrip],
+  ['tabsContainerBackground', WEIGHTS.topStrip],
+] as const satisfies ReadonlyArray<readonly [keyof Palette, number]>;
+
+/**
+ * How far two themes sit from each other across those five regions, on the same weighted
+ * CIE Lab scale `scoreTheme` puts a screenshot on. Unlike `scoreTheme` the field set is
+ * fixed, since no screenshot is involved: unset colors take the workbench defaults, so
+ * the number is defined for every pair of themes.
+ */
+export function paletteDistance(a: Palette, b: Palette): number {
+  let total = 0;
+  let weight = 0;
+  for (const [field, w] of PATTERN_FIELDS) {
+    const left = resolvedColor(a, field);
+    const right = resolvedColor(b, field);
+    if (!left || !right) continue;
+    total += w * deltaE(hexToLab(left), hexToLab(right));
+    weight += w;
+  }
+  return weight > 0 ? total / weight : Number.POSITIVE_INFINITY;
+}
+
 /** Unknown rank (0) sorts after every known rank. */
 function byRank(a: IndexedTheme, b: IndexedTheme): number {
   const ra = a.rank || Number.MAX_SAFE_INTEGER;

@@ -8,9 +8,22 @@ export interface ClassMatch<T extends { theme: IndexedTheme }> {
   score: T;
 }
 
-const byRank = (a: IndexedTheme, b: IndexedTheme) =>
-  (a.rank || Number.MAX_SAFE_INTEGER) - (b.rank || Number.MAX_SAFE_INTEGER) ||
+/** Unknown rank (0) sorts after every known rank; the name settles what is left. */
+export const byInstalls = (a: IndexedTheme, b: IndexedTheme) =>
+  installsRank(a) - installsRank(b) ||
   a.displayName.localeCompare(b.displayName);
+
+export const installsRank = (theme: IndexedTheme) =>
+  theme.rank || Number.MAX_SAFE_INTEGER;
+
+/** The theme's palette class, most installed first, falling back to the theme itself. */
+export function classMembers(
+  theme: IndexedTheme,
+  membersOf: (paletteClass: number) => IndexedTheme[],
+): IndexedTheme[] {
+  const members = [...membersOf(theme.paletteClass)].sort(byInstalls);
+  return members.length > 0 ? members : [theme];
+}
 
 /**
  * Ranked per-theme results collapse into palette classes in ranking order; every class lists all
@@ -27,11 +40,10 @@ export function collapseToClasses<T extends { theme: IndexedTheme }>(
     const cls = hit.theme.paletteClass;
     if (seen.has(cls)) continue;
     seen.add(cls);
-    const members = [...membersOf(cls)].sort(byRank);
-    const representative = members[0] ?? hit.theme;
+    const [representative, ...identical] = classMembers(hit.theme, membersOf);
     out.push({
-      theme: representative,
-      identical: members.filter((m) => m.id !== representative.id),
+      theme: representative!,
+      identical,
       score: hit,
     });
     if (out.length >= k) break;
