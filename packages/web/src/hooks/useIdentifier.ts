@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Observation } from '@vscodethemes/shared';
 import type {
   Engine,
+  PopularMatch,
   RankedMatch,
   WorkerRequest,
   WorkerResponse,
@@ -20,6 +21,7 @@ export interface IdentifierState {
   screenshotUrl: string | null;
   observation: Observation | null;
   matches: RankedMatch[];
+  popular: PopularMatch | null;
   engine: Engine | null;
   ms: number;
 }
@@ -32,6 +34,7 @@ const INITIAL: IdentifierState = {
   screenshotUrl: null,
   observation: null,
   matches: [],
+  popular: null,
   engine: null,
   ms: 0,
 };
@@ -64,6 +67,7 @@ export function useIdentifier() {
           status: 'done',
           observation: message.observation,
           matches: message.matches,
+          popular: message.popular,
           engine: message.engine,
           ms: message.ms,
         }));
@@ -111,6 +115,7 @@ export function useIdentifier() {
         screenshotUrl: null,
         observation: null,
         matches: [],
+        popular: null,
         engine: null,
         ms: 0,
         error: null,

@@ -8,6 +8,7 @@ import { DropZone } from './components/DropZone.tsx';
 import { Sampled } from './components/Sampled.tsx';
 import { Confidence } from './components/Confidence.tsx';
 import { Matches } from './components/Matches.tsx';
+import { Popular } from './components/Popular.tsx';
 import { Explainer } from './components/Explainer.tsx';
 import { StatusBar } from './components/StatusBar.tsx';
 
@@ -79,6 +80,10 @@ export function App() {
                   layout={state.observation.layout}
                 />
               )}
+              <Popular
+                popular={state.popular}
+                topName={state.matches[0]!.theme.displayName}
+              />
               <p style={{ marginTop: 24 }}>
                 <button
                   className="button button--ghost"

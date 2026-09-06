@@ -15,6 +15,17 @@ export interface RankedMatch {
   similarity?: number;
 }
 
+/** The most installed theme wearing roughly the winner's palette. */
+export interface PopularMatch {
+  theme: IndexedTheme;
+  /** Its own distance to the screenshot, on the scale the match rows print. */
+  distance: number;
+  /** How far its palette sits from the winner's. */
+  apart: number;
+  /** Themes inside the band, the winner included. */
+  considered: number;
+}
+
 export type WorkerRequest =
   | { type: 'load'; baseUrl: string }
   | { type: 'identify'; requestId: number; pixels: PixelImage };
@@ -28,6 +39,7 @@ export type WorkerResponse =
       engine: Engine;
       observation: Observation;
       matches: RankedMatch[];
+      popular: PopularMatch | null;
       ms: number;
     }
   | { type: 'error'; message: string };

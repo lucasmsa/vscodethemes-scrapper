@@ -3,6 +3,7 @@ import {
   collapseToClasses,
   expandThemeIndex,
   extractObservation,
+  popularLookalike,
   prepareThemes,
   rankThemes,
   scoreTheme,
@@ -14,6 +15,7 @@ import { embed, loadModel, type Model } from '../lib/model.ts';
 import { rankBySimilarity } from '../lib/similarity.ts';
 import type {
   Engine,
+  PopularMatch,
   RankedMatch,
   WorkerRequest,
   WorkerResponse,
@@ -102,7 +104,14 @@ async function rank(pixels: Parameters<typeof extractObservation>[0]) {
       ? { similarity: c.score.similarity }
       : {}),
   }));
-  return { observation, engine, matches };
+  const readout = popularLookalike(scored, membersOf!);
+  const popular: PopularMatch | null = readout && {
+    theme: readout.theme,
+    distance: readout.score.distance,
+    apart: readout.apart,
+    considered: readout.considered,
+  };
+  return { observation, engine, matches, popular };
 }
 
 self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
@@ -111,13 +120,16 @@ self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
     if (message.type === 'load') return await load(message.baseUrl);
     if (!prepared || !membersOf) throw new Error('index not loaded');
     const started = performance.now();
-    const { observation, engine, matches } = await rank(message.pixels);
+    const { observation, engine, matches, popular } = await rank(
+      message.pixels,
+    );
     post({
       type: 'result',
       requestId: message.requestId,
       engine,
       observation,
       matches,
+      popular,
       ms: Math.round(performance.now() - started),
     });
   } catch (error) {
