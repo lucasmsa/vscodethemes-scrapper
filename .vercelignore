@@ -1,0 +1,13 @@
+node_modules
+previews
+renders
+eval/queries
+eval/renders
+data/.cache
+data/themes.json
+model/.venv
+model/runs
+model/data
+docs
+playwright-report
+test-results

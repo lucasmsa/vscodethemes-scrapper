@@ -1,5 +1,7 @@
 # 🕸️ What is my theme?
 
+**[whatismytheme.lucasmsa.com](https://whatismytheme.lucasmsa.com)**
+
 Drop a screenshot of an editor, get the VS Code theme. The page samples the
 colors of the editor area, activity bar, status bar and top strips, converts
 them to CIE Lab and ranks every theme scraped from
@@ -136,8 +138,8 @@ The page is static: an HTML shell, a 65 KB gzipped bundle, the theme index at
 1.7 MB gzipped, a 3.4 MB ONNX graph, a 4.1 MB int8 gallery and the ONNX Runtime
 wasm at 3.7 MB gzipped. On Vercel, set the root directory to `packages/web`; the
 included `vercel.json` installs and builds from the repository root, which
-regenerates the index before building. Proposed subdomain:
-`whatismytheme.lucasmsa.com`.
+regenerates the index before building. Live at
+[whatismytheme.lucasmsa.com](https://whatismytheme.lucasmsa.com).
 
 ## ⌘ Scrape v2 in one paragraph
 
