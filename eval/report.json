@@ -441,6 +441,133 @@
     }
    },
    "generatedAt": "2026-09-04T17:48:26.627Z"
+  },
+  {
+   "approach": "hybrid",
+   "engine": "onnx-retrieve-then-lab",
+   "embedded": 32741,
+   "classes": 32742,
+   "epochs": 14,
+   "gallery": 32742,
+   "paletteClasses": 26699,
+   "sampleSize": 2000,
+   "seed": 42,
+   "heldOut": [
+    "css",
+    "java"
+   ],
+   "queries": 4000,
+   "n": 4000,
+   "top1": 42.27,
+   "top1Tied": 50.6,
+   "top5": 61.08,
+   "top1Class": 45.88,
+   "top5Class": 64.28,
+   "lookalike": [
+    {
+     "band": 0,
+     "fires": 13.57,
+     "notShownWhenFires": 53.59,
+     "rescue": 1,
+     "truthInBand": 51.2,
+     "truthOutranked": 7.85,
+     "truthOutrankedWhenInBand": 15.33,
+     "meanCandidates": 8.59,
+     "meanDeltaEOverTop": 0,
+     "medianApart": 0,
+     "overTenWhenFires": 0,
+     "medianReadoutRank": 157,
+     "medianTopRank": 6627
+    },
+    {
+     "band": 1,
+     "fires": 32.83,
+     "notShownWhenFires": 69.69,
+     "rescue": 1.93,
+     "truthInBand": 57.4,
+     "truthOutranked": 18.15,
+     "truthOutrankedWhenInBand": 31.62,
+     "meanCandidates": 16.69,
+     "meanDeltaEOverTop": 0.33,
+     "medianApart": 0.58,
+     "overTenWhenFires": 0,
+     "medianReadoutRank": 157,
+     "medianTopRank": 7447
+    },
+    {
+     "band": 1.5,
+     "fires": 45,
+     "notShownWhenFires": 73.83,
+     "rescue": 2,
+     "truthInBand": 60.4,
+     "truthOutranked": 25.45,
+     "truthOutrankedWhenInBand": 42.14,
+     "meanCandidates": 23.26,
+     "meanDeltaEOverTop": 0.56,
+     "medianApart": 1.04,
+     "overTenWhenFires": 0,
+     "medianReadoutRank": 108,
+     "medianTopRank": 7442
+    },
+    {
+     "band": 2.3,
+     "fires": 58.83,
+     "notShownWhenFires": 80.15,
+     "rescue": 1.95,
+     "truthInBand": 65.85,
+     "truthOutranked": 36.52,
+     "truthOutrankedWhenInBand": 55.47,
+     "meanCandidates": 39.01,
+     "meanDeltaEOverTop": 0.9,
+     "medianApart": 1.61,
+     "overTenWhenFires": 0.04,
+     "medianReadoutRank": 63,
+     "medianTopRank": 7008
+    },
+    {
+     "band": 5,
+     "fires": 78.53,
+     "notShownWhenFires": 88.89,
+     "rescue": 1.38,
+     "truthInBand": 75.45,
+     "truthOutranked": 58.67,
+     "truthOutrankedWhenInBand": 77.77,
+     "meanCandidates": 92.27,
+     "meanDeltaEOverTop": 1.85,
+     "medianApart": 3,
+     "overTenWhenFires": 0.13,
+     "medianReadoutRank": 20,
+     "medianTopRank": 7001
+    }
+   ],
+   "msPerQuery": 26,
+   "byCrop": {
+    "editor": {
+     "n": 1306,
+     "top1": 17.3,
+     "top1Tied": 24.04,
+     "top5": 35.83,
+     "top1Class": 18.76,
+     "top5Class": 38.51
+    },
+    "window": {
+     "n": 1348,
+     "top1": 65.13,
+     "top1Tied": 74.48,
+     "top5": 83.09,
+     "top1Class": 70.03,
+     "top5Class": 86.35
+    },
+    "partial": {
+     "n": 1346,
+     "top1": 43.61,
+     "top1Tied": 52.45,
+     "top5": 63.52,
+     "top1Class": 47.99,
+     "top5Class": 67.16
+    }
+   },
+   "generatedAt": "2026-09-06T17:34:54.053Z"
   }
  ]
 }

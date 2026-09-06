@@ -6,3 +6,4 @@ export * from './themeIndex.ts';
 export * from './match.ts';
 export * from './classes.ts';
 export * from './collapse.ts';
+export * from './lookalike.ts';

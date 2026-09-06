@@ -1,9 +1,10 @@
 import { PALETTE_FIELDS } from './palette.ts';
 import type { Palette } from './palette.ts';
-import { hexToRgb } from './color.ts';
+import { deltaE, hexToLab, hexToRgb } from './color.ts';
 import type { Observation } from './extract.ts';
 import type { IndexedTheme } from './themeIndex.ts';
 import {
+  paletteDistance,
   prepareThemes,
   rankThemes,
   resolvedColor,
@@ -71,6 +72,45 @@ describe('themeKind and defaults', () => {
       '#191a21',
     );
     expect(resolvedColor(light.palette, 'tabBorder')).toBeNull();
+  });
+});
+
+describe('paletteDistance', () => {
+  it('is zero between a theme and itself', () => {
+    expect(paletteDistance(dracula.palette, dracula.palette)).toBe(0);
+  });
+
+  it('ignores colors the ranking does not weigh, so a foreground-only variant is the same look', () => {
+    expect(paletteDistance(dracula.palette, draculaSoft.palette)).toBe(0);
+  });
+
+  it('charges an editor background on its own three ninths of the weight', () => {
+    const shifted = make('shifted', {
+      ...dracula.palette,
+      editorBackground: '#303045',
+    });
+    expect(paletteDistance(dracula.palette, shifted.palette)).toBeCloseTo(
+      (3 / 9) * deltaE(hexToLab('#282a36'), hexToLab('#303045')),
+      10,
+    );
+  });
+
+  it('fills unset colors with the workbench defaults instead of skipping them', () => {
+    const bare = make('bare', { editorBackground: '#ffffff' });
+    const spelled = make('spelled', {
+      editorBackground: '#ffffff',
+      activityBarBackground: '#2c2c2c',
+      statusBarBackground: '#007acc',
+      titleBarActiveBackground: '#dddddd',
+      tabsContainerBackground: '#f3f3f3',
+    });
+    expect(paletteDistance(bare.palette, spelled.palette)).toBe(0);
+  });
+
+  it('is symmetric', () => {
+    expect(paletteDistance(dracula.palette, oneDark.palette)).toBe(
+      paletteDistance(oneDark.palette, dracula.palette),
+    );
   });
 });
 
