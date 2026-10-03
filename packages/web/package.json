@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vscodethemes/shared": "*",
     "onnxruntime-web": "^1.29.0",
     "react": "^19.2.0",
