@@ -97,7 +97,9 @@ input[type='file'] {
 }
 
 .title-bar__right {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
 }
 
 .rail {

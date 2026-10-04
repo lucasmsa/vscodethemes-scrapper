@@ -8,6 +8,9 @@ export function TitleBar() {
       </div>
       <div className="title-bar__name">what is my theme?</div>
       <div className="title-bar__right">
+        <a href="https://lucasmsa.com" rel="author">
+          by lucasmsa
+        </a>
         <a href="https://github.com/lucasmsa/vscodethemes-scrapper">
           lucasmsa/vscodethemes-scrapper
         </a>
